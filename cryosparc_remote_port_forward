@@ -9,7 +9,7 @@ echo "Cryosparc will be started on $(hostname) and establish port farwarding fro
 
 ssh -N -R ${port}:localhost:${port} $SLURM_SUBMIT_HOST &
 
-apptainer run --bind $HOME/cryosparc-data:/home/$(whoami)/cryosparc \
+apptainer run --nv --bind $HOME/cryosparc-data:/home/$(whoami)/cryosparc \
 	--env CRYOSPARC_BASE_PORT=${port} \
 	--env CRYOSPARC_LICENSE_ID=${CRYOSPARC_LICENSE_ID} \
 	--env LSCRATCH=$TMPDIR \
