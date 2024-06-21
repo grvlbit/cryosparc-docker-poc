@@ -62,14 +62,18 @@ First, convert the docker image to sif:
 
     export APPTAINER_TMPDIR=$SCRATCH
     apptainer build cryosparc-docker-poc.sif docker://grvlbit/cryosparc-docker-poc
-    apptainer overlay create --fakeroot --size 1024 overlay.img
 
-Set the license:
+Create persistent overlay and fix lconfig inside the container:
+
+    apptainer overlay create --fakeroot --size 1024 overlay.img
+    srun --time=00:01:00 --partition=gpu-invest --qos=job_gpu_preemptable --gpus=rtx3090:1 apptainer exec --nv --overlay overlay.img --fakeroot cryosparc-docker-poc.sif ldconfig /.singularity.d/libs/
+
+Set the license, create data directory and start the CryoSPARC instance on a compute node:
 
     export CRYOSPARC_LICENSE_ID=XXXXXX
     export MAIL=prename.name@university
     mkdir ~/cryosparc-data #matching bind directory in cryosparc_remote_port_forward
-    ./cryosparc-compute 39000 --time=00:15:00 --partition=gpu-invest --qos=job_gpu_preemptable --gpus=gtx1080ti:1
+    ./cryosparc-compute 39000 --time=00:15:00 --partition=gpu-invest --qos=job_gpu_preemptable --gpus=rtx3090:1
 
 
 ## Building
