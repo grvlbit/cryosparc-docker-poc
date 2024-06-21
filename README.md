@@ -62,10 +62,14 @@ First, convert the docker image to sif:
 
     export APPTAINER_TMPDIR=$SCRATCH
     apptainer build cryosparc-docker-poc.sif docker://grvlbit/cryosparc-docker-poc
+    apptainer overlay create --fakeroot --size 1024 overlay.img
 
 Set the license:
 
     export CRYOSPARC_LICENSE_ID=XXXXXX
+    export MAIL=prename.name@university
+    mkdir ~/cryosparc-data #matching bind directory in cryosparc_remote_port_forward
+    ./cryosparc-compute 39000 --time=00:15:00 --partition=gpu-invest --qos=job_gpu_preemptable --gpus=gtx1080ti:1
 
 
 ## Building
